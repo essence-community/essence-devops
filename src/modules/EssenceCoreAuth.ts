@@ -16,9 +16,9 @@ export class EssenceCoreAuth implements CanActivate {
         return axios({
             url: `${process.env.ESSENCE_CORE_URL}?query=getsessiondata&session=${encodeURIComponent(session)}`,
             method: 'GET',
-            headers: {
+            headers: request.headers?.cookie ? {
                 cookie: request.headers.cookie,
-            },
+            } : {},
         }).then((res) => {
             if (!res.data || isEmpty(res.data.data)) {
                 log.warn(res.data);
