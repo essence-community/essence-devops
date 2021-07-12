@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <property name="user.connect" value="s_dc"/>
+  <property name="user.admin" value="s_su"/>
+  <property name="name.db" value="essence_devops"/>
+  
+  <include file="./db.sql" />
+</databaseChangeLog>
