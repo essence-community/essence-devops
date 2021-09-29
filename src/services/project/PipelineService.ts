@@ -80,29 +80,20 @@ export class PipelineService {
                 })
                 .getOneOrFail() as any;
             if (parameter.serverType.cl_application) {
-                const jt_form_message = {};
+                const res = new Result();
                 if (isEmpty(data.cn_local_port)) {
-                    jt_form_message['cn_local_port'] = {
-                        200: 'Локальный порт образа',
-                    };
+                    res.setErrorField('cn_local_port', 200, 'Локальный порт образа');
                 }
                 if (isEmpty(data.cn_publish_port)) {
-                    jt_form_message['cn_publish_port'] = {
-                        200: 'Публичный порт',
-                    };
+                    res.setErrorField('cn_publish_port', 200, 'Публичный порт');
                 }
-                if (Object.keys(jt_form_message).length) {
-                    return {
-                        ['ck_id']: '',
-                        jt_form_message,
-                    }
+                if (res.isError) {
+                    return res.setId('', 'ck_id')
                 }
             }
         }
         const result = await rep.save(data);
-        return {
-            ['ck_id']: result['ck_id']
-        }
+        return (new Result()).setId(result['ck_id'],'ck_id');
     }
 
     async update(json: JsonBody, user = '999999', req: Request): Promise<Result> {
@@ -126,35 +117,25 @@ export class PipelineService {
                 .getOneOrFail() as any;
             if (parameter.serverType.cl_application) {
                 const jt_form_message = {};
+                const res = new Result();
                 if (isEmpty(data.cn_local_port)) {
-                    jt_form_message['cn_local_port'] = {
-                        200: 'Локальный порт образа',
-                    };
+                    res.setErrorField('cn_local_port', 200, 'Локальный порт образа');
                 }
                 if (isEmpty(data.cn_publish_port)) {
-                    jt_form_message['cn_publish_port'] = {
-                        200: 'Публичный порт',
-                    };
+                    res.setErrorField('cn_publish_port', 200, 'Публичный порт');
                 }
-                if (Object.keys(jt_form_message).length) {
-                    return {
-                        ['ck_id']: '',
-                        jt_form_message,
-                    }
+                if (res.isError) {
+                    return res.setId('', 'ck_id')
                 }
             }
         }
         const res = await rep.save(data);
-        return {
-            ['ck_id']: res['ck_id'],
-        }
+        return (new Result()).setId(res['ck_id'],'ck_id');
     }
 
     async delete(json: JsonBody, user = '999999', req: Request): Promise<Result> {
         await this.connection.getRepository(PipelineModel).delete(json.data['ck_id']);
-        return {
-            ['ck_id']: json.data['ck_id'],
-        }
+        return (new Result()).setId(json.data['ck_id'],'ck_id');
     }
 
     async runPipeline(json: JsonBody, user = '999999', req: Request): Promise<Result> {
@@ -165,20 +146,13 @@ export class PipelineService {
                 status: { ck_id: 'new' },
             }
         }) ) {
-            return {
-                ['ck_id']: json.data['ck_id'],
-                cv_error: {
-                    51: ['Уже есть запущеный процесс']
-                }
-            } 
+            return (new Result()).setId(json.data['ck_id'], 'ck_id').setError(51, 'Уже есть запущеный процесс');
         }
         await rep.save({
             status: { ck_id: 'new' },
             pipeline: { ck_id: json.data['ck_id'] },
             ck_user: user,
         });
-        return {
-            ['ck_id']: json.data['ck_id'],
-        }
+        return (new Result()).setId(json.data['ck_id'],'ck_id');
     }
 }

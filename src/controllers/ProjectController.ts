@@ -94,16 +94,13 @@ export class ProjectController {
         @Req() request: Request,
         @Body('json') jsonStr: string): Promise<Result | Record<string, any>[]> {
         let json: JsonBody = {};
+        const result = new Result();
+        
         try {
             json = plainToClass(JsonBody, JSON.parse(jsonStr));
         } catch(e) {
             logger.error(e);
-            return {
-                ['ck_id']: '',
-                cv_error: {
-                    504: [],
-                },
-            };
+            return classToPlain(result.setId('').setError(504)) as Result;
         }
         
         if(json.filter) {
@@ -116,25 +113,20 @@ export class ProjectController {
         }
 
         if(json.service) {
-            let res = null;
+            let result = null;
             try {
                 switch(json.service.cv_action) {
                 case 'I':
-                    res = await this.provider.add(json, (request as any).user?.ck_id, request);
+                    result = await this.provider.add(json, (request as any).user?.ck_id, request);
                     break;
                 case 'U':
-                    res = await this.provider.update(json, (request as any).user?.ck_id, request);
+                    result = await this.provider.update(json, (request as any).user?.ck_id, request);
                     break;
                 case 'D':
-                    res = await this.provider.delete(json, (request as any).user?.ck_id, request);
+                    result = await this.provider.delete(json, (request as any).user?.ck_id, request);
                     break;
                 default:
-                    return {
-                        ['ck_id']: '',
-                        cv_error: {
-                            504: [],
-                        },
-                    };
+                    result.setId('').setError(504);
                 }
                 this.audit.log({
                     cc_json: jsonStr,
@@ -143,7 +135,7 @@ export class ProjectController {
                     cv_id: json.data['ck_id'],
                     ck_user: (request as any).user?.ck_id || '999999',
                 } as any);
-                return res;
+                return classToPlain(result) as Result;
             } catch (e) {
                 this.audit.log({
                     cc_json: jsonStr,
@@ -157,11 +149,6 @@ export class ProjectController {
             }
         }
 
-        return {
-            ['ck_id']: '',
-            cv_error: {
-                504: [],
-            },
-        };
+        return classToPlain(result.setId('').setError(504)) as Result;
     }
 }

@@ -33,9 +33,7 @@ export class ParameterService {
         const data: ParameterModel = plainToEntity(rep.metadata, json.data) as ParameterModel;
         data.ck_user = user;
         const result = await rep.save(data);
-        return {
-            ['ck_id']: result['ck_id']
-        }
+        return (new Result()).setId(result['ck_id'],'ck_id');
     }
 
     async update(json: JsonBody, user = '999999', req: Request): Promise<Result> {
@@ -45,15 +43,11 @@ export class ParameterService {
         data.ck_user = user;
         await rep.findOneOrFail(data['ck_id']);
         const res = await rep.save(data);
-        return {
-            ['ck_id']: res['ck_id'],
-        }
+        return (new Result()).setId(res['ck_id'],'ck_id');
     }
 
     async delete(json: JsonBody, user = '999999', req: Request): Promise<Result> {
         await this.connection.getRepository(ParameterModel).delete(json.data['ck_id']);
-        return {
-            ['ck_id']: json.data['ck_id'],
-        }
+        return (new Result()).setId(json.data['ck_id'],'ck_id');
     }
 }
