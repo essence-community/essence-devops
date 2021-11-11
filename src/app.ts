@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 import { EssenceCoreAuth } from './modules/EssenceCoreAuth';
 import { AppLogger } from './services/AppLogger';
 import { Job } from './job/Job';
-import './Constatant';
+import './Constant';
 export async function bootstrap() {
     const app = await NestFactory.create(AppModule, { cors: true, logger: new AppLogger() });
 
