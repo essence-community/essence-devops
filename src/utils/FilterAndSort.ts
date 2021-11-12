@@ -86,7 +86,9 @@ export const filterEntity = (entity: EntityMetadata, target: IFilter[] = []) => 
                 res[meta.propertyName] = Equal(filter.value);
                 break;
             case 'like': 
-                res[meta.propertyName] = Raw((alias) => `UPPER(${alias}) like UPPER('%${filter.value.replace("'","''")}%')`);
+                res[meta.propertyName] = Raw((alias) => `UPPER(${alias}) like UPPER('%' || :filter || '%')`, {
+                    filter: filter.value,
+                });
                 break;
             case 'in':
                 if (Array.isArray(filter.value)) {
