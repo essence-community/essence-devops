@@ -16,7 +16,6 @@ import {PostgresDriver} from 'typeorm/driver/postgres/PostgresDriver';
 import {OracleDriver} from 'typeorm/driver/oracle/OracleDriver';
 import {ColumnMetadata} from 'typeorm/metadata/ColumnMetadata';
 import {isEmpty, deepParam} from './Base';
-import {IFilter} from '../../dist/utils/FilterAndSort';
 import * as moment from 'moment';
 import {JsonBody} from '../dto/JsonBody';
 
@@ -506,7 +505,7 @@ export const emptyMacroRaw = (query: string, params: Record<string, any>, startP
 };
 
 interface IExecuteQueryRawOptions {
-    filter?: IFilter[];
+    filter?: Filter[];
     order?: Order[];
     offset?: string | number;
     fetch?: string | number;
