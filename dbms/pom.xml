@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ru.example</groupId>
+    <artifactId>dbms</artifactId>
+    <version>1.0.0</version>
+    <name>db</name>
+    <description>Install dbms</description>
+    <packaging>pom</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <slf4j.version>1.7.24</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+        <liquibase.version>4.6.1</liquibase.version>
+        <postgresql.version>42.3.1</postgresql.version>
+        <snakeyaml.version>1.23</snakeyaml.version>
+    </properties>
+    <dependencies>
+        <!--Logging-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!--JDBC drivers-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFile>${profile.propertyFile}</propertyFile>
+                    <changeLogFile>${profile.changeLogFile}</changeLogFile>
+                    <dataDir>${profile.dataDir}</dataDir>
+                    <!-- log  -->
+                    <verbose>${profile.verbose}</verbose>
+                    <logging>${profile.logging}</logging>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+      <!-- Init settings, -Denv=init -->
+      <profile>
+        <id>init</id>
+        <activation>
+          <property>
+            <name>env</name>
+            <value>init</value>
+          </property>
+        </activation>
+        <properties>
+          <profile.propertyFile>init/liquibase.init.properties</profile.propertyFile>
+          <profile.changeLogFile>init/db.changelog.init.xml</profile.changeLogFile>
+          <profile.dataDir>init/data</profile.dataDir>
+          <profile.verbose>true</profile.verbose>
+          <profile.logging>debug</profile.logging>
+        </properties>
+      </profile>
+      <!-- Essence settings, -Denv=meta -->
+      <profile>
+        <id>meta</id>
+        <activation>
+          <property>
+            <name>env</name>
+            <value>meta</value>
+          </property>
+        </activation>
+        <properties>
+          <profile.propertyFile>liquibase.meta.properties</profile.propertyFile>
+          <profile.changeLogFile>db.changelog.meta.xml</profile.changeLogFile>
+          <profile.dataDir>data</profile.dataDir>
+          <profile.verbose>true</profile.verbose>
+          <profile.logging>debug</profile.logging>
+        </properties>
+      </profile>
+       <!-- Schema Init settings, -Denv=schema -->
+       <profile>
+        <id>schema</id>
+        <activation>
+          <property>
+            <name>env</name>
+            <value>schema</value>
+          </property>
+        </activation>
+        <properties>
+          <profile.propertyFile>liquibase.schema.properties</profile.propertyFile>
+          <profile.changeLogFile>db.changelog.schema.xml</profile.changeLogFile>
+          <profile.dataDir>data</profile.dataDir>
+          <profile.verbose>true</profile.verbose>
+          <profile.logging>debug</profile.logging>
+        </properties>
+      </profile>
+    </profiles>
+</project>

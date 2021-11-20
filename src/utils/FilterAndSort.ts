@@ -522,8 +522,12 @@ const prepareSql = (connection: Connection, query: string) => {
                     const noReplace = group.slice(0, 4);
                     const [prefix, key] = group.slice(4);
                     if (prefix === ':') {
-                        values.push(data[key] || null);
-                        return connection.driver.createParameter(key, values.length);
+                        let value = data[key] || null;
+                        if (value && (typeof value === 'object' || Array.isArray(value))) {
+                            value = JSON.stringify(value);
+                        }
+                        values.push(value);
+                        return connection.driver.createParameter(key, values.length-1);
                     } else if (prefix && prefix.length > 1) {
                         return prefix + key;
                     }
