@@ -1,7 +1,6 @@
-
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {Injectable, CanActivate, ExecutionContext} from '@nestjs/common';
 import axios from 'axios';
-import { isEmpty } from '../utils/Base';
+import {isEmpty} from '../utils/Base';
 import Logger from '../Logger';
 
 const log = Logger.getLogger('EssenceCoreAuth');
@@ -16,19 +15,24 @@ export class EssenceCoreAuth implements CanActivate {
         return axios({
             url: `${process.env.ESSENCE_CORE_URL}?query=getsessiondata&session=${encodeURIComponent(session)}`,
             method: 'GET',
-            headers: request.headers?.cookie ? {
-                cookie: request.headers.cookie,
-            } : {},
-        }).then((res) => {
-            if (!res.data || isEmpty(res.data.data)) {
-                log.warn(res.data);
+            headers: request.headers?.cookie
+                ? {
+                    cookie: request.headers.cookie,
+                }
+                : {},
+        }).then(
+            (res) => {
+                if (!res.data || isEmpty(res.data.data)) {
+                    log.warn(res.data);
+                    return isFail;
+                }
+                request.user = res.data.data[0];
+                return true;
+            },
+            (err) => {
+                log.error(err);
                 return isFail;
-            }
-            request.user = res.data.data[0];
-            return true;
-        }, (err) => {
-            log.error(err);
-            return isFail;
-        });
+            },
+        );
     }
 }

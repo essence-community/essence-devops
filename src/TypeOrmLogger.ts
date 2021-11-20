@@ -1,6 +1,6 @@
 import Logger from './Logger';
-import { Logger as ILogger, QueryRunner } from 'typeorm';
-import { IRufusLogger } from 'rufus';
+import {Logger as ILogger, QueryRunner} from 'typeorm';
+import {IRufusLogger} from 'rufus';
 
 export class TypeOrmLogger implements ILogger {
     public logger: IRufusLogger;
@@ -14,12 +14,7 @@ export class TypeOrmLogger implements ILogger {
             this.logger.debug('Query:\n%s', query);
         }
     }
-    logQueryError(
-        error: string | Error,
-        query: string,
-        parameters?: any[],
-        queryRunner?: QueryRunner,
-    ) {
+    logQueryError(error: string | Error, query: string, parameters?: any[], queryRunner?: QueryRunner) {
         if (this.logger.isTraceEnabled()) {
             this.logger.error(
                 'Error: %s\nQuery:\n%s\nParameters: %j',
@@ -29,27 +24,12 @@ export class TypeOrmLogger implements ILogger {
                 error,
             );
         } else {
-            this.logger.error(
-                'Error: %s\nQuery:\n%s',
-                typeof error === 'object' ? error.message : error,
-                query,
-                error,
-            );
+            this.logger.error('Error: %s\nQuery:\n%s', typeof error === 'object' ? error.message : error, query, error);
         }
     }
-    logQuerySlow(
-        time: number,
-        query: string,
-        parameters?: any[],
-        queryRunner?: QueryRunner,
-    ) {
+    logQuerySlow(time: number, query: string, parameters?: any[], queryRunner?: QueryRunner) {
         if (this.logger.isTraceEnabled()) {
-            this.logger.warning(
-                'Execute time: %s\nQuery:\n%s\nParameters: %j',
-                time,
-                query,
-                parameters,
-            );
+            this.logger.warning('Execute time: %s\nQuery:\n%s\nParameters: %j', time, query, parameters);
         } else {
             this.logger.warning('Execute time: %s\nQuery:\n%s', time, query);
         }
@@ -60,11 +40,7 @@ export class TypeOrmLogger implements ILogger {
     logMigration(message: string, queryRunner?: QueryRunner) {
         this.logger.debug(message);
     }
-    log(
-        level: 'log' | 'info' | 'warn',
-        message: any,
-        queryRunner?: QueryRunner,
-    ) {
+    log(level: 'log' | 'info' | 'warn', message: any, queryRunner?: QueryRunner) {
         this.logger[level](message);
     }
 }

@@ -2,11 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export function isEmpty(value: any, allowEmptyString = false) {
-    return (
-        value == null ||
-        (allowEmptyString ? false : value === '') ||
-        (Array.isArray(value) && value.length === 0)
-    );
+    return value == null || (allowEmptyString ? false : value === '') || (Array.isArray(value) && value.length === 0);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -32,36 +28,27 @@ export const deleteFolderRecursive = (pathDir: string) => {
     }
 };
 
-export function deepParam(
-    path: string | string[],
-    params: Record<string, any>,
-) {
+export function deepParam(path: string | string[], params: Record<string, any>) {
     if (isEmpty(params) || isEmpty(path)) {
         return null;
+    }
+    if (typeof path === 'string' && Object.prototype.hasOwnProperty.call(params, path)) {
+        return params[path];
     }
     const paths: any[] = Array.isArray(path) ? path : path.split('.');
     let current: any = params;
 
     for (const [idx, val] of paths.entries()) {
-        if (
-            typeof current === 'string' &&
-            (current.trim().charAt(0) === '[' ||
-                current.trim().charAt(0) === '{')
-        ) {
+        if (typeof current === 'string' && (current.trim().charAt(0) === '[' || current.trim().charAt(0) === '{')) {
             current = JSON.parse(current);
         }
         if (!Array.isArray(current) && typeof current !== 'object') {
             return null;
         }
-        if (
-            val === '*' &&
-            (current[val] === undefined || current[val] === null)
-        ) {
+        if (val === '*' && (current[val] === undefined || current[val] === null)) {
             return Array.isArray(current)
                 ? current.map((obj) => deepParam(paths.slice(idx + 1), obj))
-                : Object.entries(current).map(([key, obj]) =>
-                    deepParam(paths.slice(idx + 1), obj),
-                );
+                : Object.entries(current).map(([key, obj]) => deepParam(paths.slice(idx + 1), obj));
         }
 
         if (current[val] === undefined || current[val] === null) {
@@ -74,11 +61,7 @@ export function deepParam(
     return current;
 }
 
-export const deepChange = (
-    obj: Record<string, any>,
-    path: string,
-    value: any,
-): boolean => {
+export const deepChange = (obj: Record<string, any>, path: string, value: any): boolean => {
     if (isEmpty(path) || isEmpty(obj)) {
         return false;
     }
@@ -86,10 +69,7 @@ export const deepChange = (
     const last = paths.pop();
     let current: any = obj;
 
-    if (
-        !Array.isArray(current[paths[0]]) &&
-        typeof current[paths[0]] !== 'object'
-    ) {
+    if (!Array.isArray(current[paths[0]]) && typeof current[paths[0]] !== 'object') {
         current[paths[0]] = /[0-9]+/.test(paths[0]) ? [] : {};
     }
     for (const val of paths) {

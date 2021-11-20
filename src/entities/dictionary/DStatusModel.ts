@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryColumn} from 'typeorm';
-import { Audit } from '../../dao/Audit';
+import {Audit} from '../../dao/Audit';
 
 @Entity('t_d_status')
 export class DStatusModel extends Audit {

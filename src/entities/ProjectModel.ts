@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import { Audit } from '../dao/Audit';
+import {Audit} from '../dao/Audit';
 
 @Entity('t_project')
 export class ProjectModel extends Audit {
@@ -19,5 +19,4 @@ export class ProjectModel extends Audit {
         nullable: true,
     })
     ['cv_description']?: string;
-
 }

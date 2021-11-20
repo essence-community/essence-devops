@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+import {ApiProperty} from '@nestjs/swagger';
+import {Exclude} from 'class-transformer';
 
 export enum MessageType {
     'all' = 'all',
@@ -47,7 +47,7 @@ export class Result {
      * @param field наименования поля
      * @param code код ошибки | строка | uuid localization
      * @param args Дополнительные параметры
-     * @returns 
+     * @returns
      */
     public addMessage(type: MessageType, code: string | number, ...args: string[]) {
         if (type === MessageType.warning) {
@@ -79,7 +79,7 @@ export class Result {
      * @param field наименования поля
      * @param code код ошибки | строка | uuid localization
      * @param args Дополнительные параметры
-     * @returns 
+     * @returns
      */
     public addMessageField(type: MessageType, field: string, code: string | number, ...args: string[]) {
         if (type === MessageType.warning) {
@@ -109,7 +109,7 @@ export class Result {
      * Возращаем данные в форму
      * @param field наименование поля
      * @param value значения
-     * @returns 
+     * @returns
      */
     public addFieldReturn(field: string, value: any) {
         if (!this.jt_return_form_data) {
@@ -123,7 +123,7 @@ export class Result {
      * Возращаем данные в форму (со сбросом)
      * @param field наименование поля
      * @param value значения
-     * @returns 
+     * @returns
      */
     public addFieldReturnBreak(field: string, value: any) {
         if (!this.jt_return_form_break) {
@@ -137,7 +137,7 @@ export class Result {
      * Добавляем в ответ ошибку
      * @param code код ошибки | строка | uuid localization
      * @param args Дополнительные параметры
-     * @returns 
+     * @returns
      */
     public setError(code: string | number, ...args: string[]) {
         this.addMessage(MessageType.error, code, ...args);
@@ -148,7 +148,7 @@ export class Result {
      * Добавляем в ответ предупреждение
      * @param code код ошибки | строка | uuid localization
      * @param args Дополнительные параметры
-     * @returns 
+     * @returns
      */
     public setWarning(code: string | number, ...args: string[]) {
         this.addMessage(MessageType.warning, code, ...args);
@@ -160,7 +160,7 @@ export class Result {
      * @param field поле формы
      * @param code код ошибки | строка | uuid localization
      * @param args Дополнительные параметры
-     * @returns 
+     * @returns
      */
     public setErrorField(field: string, code: string | number, ...args: string[]) {
         this.addMessageField(MessageType.error, field, code, ...args);
@@ -172,7 +172,7 @@ export class Result {
      * @param field поле формы
      * @param code код ошибки | строка | uuid localization
      * @param args Дополнительные параметры
-     * @returns 
+     * @returns
      */
     public setWarningField(field: string, code: string | number, ...args: string[]) {
         this.addMessageField(MessageType.warning, field, code, ...args);
@@ -183,7 +183,7 @@ export class Result {
      * Устанавливаем уникальный индетицикатор
      * @param value значение
      * @param name наименование поля
-     * @returns 
+     * @returns
      */
     public setId(value: any, name = 'ck_id') {
         this[name] = value;

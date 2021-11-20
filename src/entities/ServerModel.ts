@@ -1,8 +1,8 @@
-import { Expose, Transform } from 'class-transformer';
+import {Expose, Transform} from 'class-transformer';
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryColumn} from 'typeorm';
-import { Audit } from '../dao/Audit';
-import { Setting } from '../dto/Setting';
-import { DServerTypeModel } from './dictionary/DServerTypeModel';
+import {Audit} from '../dao/Audit';
+import {Setting} from '../dto/Setting';
+import {DServerTypeModel} from './dictionary/DServerTypeModel';
 
 @Entity('t_server')
 export class ServerModel extends Audit {
@@ -17,16 +17,16 @@ export class ServerModel extends Audit {
     })
     ['cv_description']?: string;
 
-    @ManyToOne(type => DServerTypeModel, {
+    @ManyToOne((type) => DServerTypeModel, {
         nullable: false,
     })
     @JoinColumn({
-        name: 'ck_d_server_type'
+        name: 'ck_d_server_type',
     })
     @Expose({
         name: 'ck_d_server_type',
     })
-    @Transform(({ value }) => value?.ck_id, { toPlainOnly: true })
+    @Transform(({value}) => value?.ck_id, {toPlainOnly: true})
     dServerTypeModel: DServerTypeModel;
 
     @Column({

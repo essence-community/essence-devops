@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import { Audit } from '../dao/Audit';
+import {Audit} from '../dao/Audit';
 
 @Entity('t_log')
 export class LogModel extends Audit {

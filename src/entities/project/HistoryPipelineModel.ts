@@ -1,8 +1,8 @@
-import { Expose, Transform } from 'class-transformer';
+import {Expose, Transform} from 'class-transformer';
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import { Audit } from '../../dao/Audit';
-import { PipelineModel } from './PipelineModel';
-import { DStatusModel } from '../dictionary/DStatusModel';
+import {Audit} from '../../dao/Audit';
+import {PipelineModel} from './PipelineModel';
+import {DStatusModel} from '../dictionary/DStatusModel';
 
 @Entity('t_history_pipeline')
 export class HistoryPipelineModel extends Audit {
@@ -23,30 +23,30 @@ export class HistoryPipelineModel extends Audit {
     })
     ['cv_error']?: string;
 
-    @ManyToOne(type => DStatusModel, {
+    @ManyToOne((type) => DStatusModel, {
         nullable: false,
     })
     @JoinColumn({
-        name: 'ck_d_status'
+        name: 'ck_d_status',
     })
     @Expose({
         name: 'ck_d_status',
     })
-    @Transform(({ value }) => value?.ck_id, { toPlainOnly: true })
+    @Transform(({value}) => value?.ck_id, {toPlainOnly: true})
     status: DStatusModel;
 
-    @Transform(({ obj }) => obj?.status?.cv_description, { toPlainOnly: true })
+    @Transform(({obj}) => obj?.status?.cv_description, {toPlainOnly: true})
     cv_d_status?: string = '';
 
-    @ManyToOne(type => PipelineModel, {
+    @ManyToOne((type) => PipelineModel, {
         nullable: false,
     })
     @JoinColumn({
-        name: 'ck_pipeline'
+        name: 'ck_pipeline',
     })
     @Expose({
         name: 'ck_pipeline',
     })
-    @Transform(({ value }) => value?.ck_id, { toPlainOnly: true })
+    @Transform(({value}) => value?.ck_id, {toPlainOnly: true})
     pipeline: PipelineModel;
 }

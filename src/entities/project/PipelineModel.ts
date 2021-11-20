@@ -1,9 +1,9 @@
-import { Expose, Transform } from 'class-transformer';
+import {Expose, Transform} from 'class-transformer';
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import { Audit } from '../../dao/Audit';
-import { ProjectModel } from '../ProjectModel';
-import { ParameterModel } from './ParameterModel';
-import { Setting } from '../../dto/Setting';
+import {Audit} from '../../dao/Audit';
+import {ProjectModel} from '../ProjectModel';
+import {ParameterModel} from './ParameterModel';
+import {Setting} from '../../dto/Setting';
 
 @Entity('t_pipeline')
 export class PipelineModel extends Audit {
@@ -64,27 +64,27 @@ export class PipelineModel extends Audit {
     })
     cct_env: Setting[] = [];
 
-    @ManyToOne(type => ProjectModel, {
+    @ManyToOne((type) => ProjectModel, {
         nullable: false,
     })
     @JoinColumn({
-        name: 'ck_project'
+        name: 'ck_project',
     })
     @Expose({
         name: 'ck_project',
     })
-    @Transform(({ value }) => value?.ck_id, { toPlainOnly: true })
+    @Transform(({value}) => value?.ck_id, {toPlainOnly: true})
     project: ProjectModel;
 
-    @ManyToOne(type => ParameterModel, {
+    @ManyToOne((type) => ParameterModel, {
         nullable: false,
     })
     @JoinColumn({
-        name: 'ck_parameter'
+        name: 'ck_parameter',
     })
     @Expose({
         name: 'ck_parameter',
     })
-    @Transform(({ value }) => value?.ck_id, { toPlainOnly: true })
+    @Transform(({value}) => value?.ck_id, {toPlainOnly: true})
     parameter: ParameterModel;
 }

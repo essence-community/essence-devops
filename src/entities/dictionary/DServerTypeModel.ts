@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryColumn} from 'typeorm';
-import { Audit } from '../../dao/Audit';
+import {Audit} from '../../dao/Audit';
 
 @Entity('t_d_server_type')
 export class DServerTypeModel extends Audit {

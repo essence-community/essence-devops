@@ -1,8 +1,7 @@
 import {MigrationInterface, QueryRunner} from 'typeorm';
-import { DStatusModel } from '../entities/dictionary/DStatusModel';
+import {DStatusModel} from '../entities/dictionary/DStatusModel';
 
 export class initDStatus1623771413662 implements MigrationInterface {
-
     async up(queryRunner: QueryRunner): Promise<void> {
         queryRunner.connection.getRepository(DStatusModel).save({
             ck_id: 'new',
@@ -33,6 +32,4 @@ export class initDStatus1623771413662 implements MigrationInterface {
         queryRunner.connection.getRepository(DStatusModel).delete('fault');
         queryRunner.connection.getRepository(DStatusModel).delete('error');
     }
-
-
 }

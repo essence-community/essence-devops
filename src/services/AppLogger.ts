@@ -1,5 +1,4 @@
-
-import { LoggerService } from '@nestjs/common';
+import {LoggerService} from '@nestjs/common';
 import Logger from '../Logger';
 
 const appLogger = Logger.getLogger('AppLogger');

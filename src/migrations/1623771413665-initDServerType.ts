@@ -1,8 +1,7 @@
 import {MigrationInterface, QueryRunner} from 'typeorm';
-import { DServerTypeModel } from '../entities/dictionary/DServerTypeModel';
+import {DServerTypeModel} from '../entities/dictionary/DServerTypeModel';
 
 export class initDServerType1623771413665 implements MigrationInterface {
-
     async up(queryRunner: QueryRunner): Promise<void> {
         queryRunner.connection.getRepository(DServerTypeModel).save({
             ck_id: 'docker-build-registry',
@@ -32,5 +31,4 @@ export class initDServerType1623771413665 implements MigrationInterface {
         queryRunner.connection.getRepository(DServerTypeModel).delete('app-podman');
         queryRunner.connection.getRepository(DServerTypeModel).delete('app-docker');
     }
-
 }

@@ -17,17 +17,11 @@ class Logger {
                 (err, strConf) => {
                     if (err) {
                         // tslint:disable-next-line:no-console
-                        console.error(
-                            'Ошибка инициализации настроек логера',
-                            err,
-                        );
+                        console.error('Ошибка инициализации настроек логера', err);
                     }
                     let findLevel = re.exec(strConf);
                     while (findLevel !== null) {
-                        strConf = strConf.replace(
-                            `"${findLevel[1]}"`,
-                            rufus[findLevel[1].toUpperCase()],
-                        );
+                        strConf = strConf.replace(`"${findLevel[1]}"`, rufus[findLevel[1].toUpperCase()]);
                         findLevel = re.exec(strConf);
                     }
                     // tslint:disable-next-line:no-console
